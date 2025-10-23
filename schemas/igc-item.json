@@ -1,0 +1,146 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://stac-extensions.github.io/igc/v1.0.0/schema.json",
+  "title": "STAC IGC Item Extension",
+  "description": "Defines additional Item properties that describe International Gliding Commission (IGC) flight metadata.",
+  "type": "object",
+  "allOf": [
+    {
+      "$ref": "https://schemas.stacspec.org/v1.0.0/item-spec/json-schema/item.json"
+    },
+    {
+      "type": "object",
+      "properties": {
+        "stac_extensions": {
+          "type": "array",
+          "contains": {
+            "const": "https://stac-extensions.github.io/igc/v1.0.0/schema.json"
+          }
+        },
+        "properties": {
+          "type": "object",
+          "properties": {
+            "igc:pilot": {
+              "type": "string",
+              "description": "Primary pilot responsible for the flight as recorded in the IGC header."
+            },
+            "igc:co_pilot": {
+              "type": "string",
+              "description": "Optional second pilot or instructor associated with the flight."
+            },
+            "igc:glider": {
+              "type": "string",
+              "description": "Glider make and model, including competition identifiers when available."
+            },
+            "igc:competition_class": {
+              "type": "string",
+              "description": "Competition class for the flight (e.g., Club, 18m) if declared."
+            },
+            "igc:takeoff_time": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Timestamp when the aircraft left the ground, in UTC."
+            },
+            "igc:landing_time": {
+              "type": "string",
+              "format": "date-time",
+              "description": "Timestamp when the aircraft landed, in UTC."
+            },
+            "igc:altitude_min_m": {
+              "type": "number",
+              "description": "Minimum recorded altitude in meters above mean sea level.",
+              "minimum": -500.0
+            },
+            "igc:altitude_max_m": {
+              "type": "number",
+              "description": "Maximum recorded altitude in meters above mean sea level."
+            },
+            "igc:altitude_reference": {
+              "type": "string",
+              "enum": [
+                "gps",
+                "barometric"
+              ],
+              "description": "Altitude sensor used for min/max calculations."
+            },
+            "igc:turnpoints": {
+              "type": "array",
+              "description": "Ordered list of declared task turnpoints.",
+              "items": {
+                "$ref": "#/$defs/turnpoint"
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "igc:pilot",
+            "igc:glider",
+            "igc:takeoff_time",
+            "igc:landing_time"
+          ],
+          "dependentSchemas": {
+            "igc:altitude_min_m": {
+              "properties": {
+                "igc:altitude_max_m": true
+              },
+              "required": [
+                "igc:altitude_max_m"
+              ]
+            },
+            "igc:altitude_max_m": {
+              "properties": {
+                "igc:altitude_min_m": true
+              },
+              "required": [
+                "igc:altitude_min_m"
+              ]
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "turnpoint": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Identifier or name of the task turnpoint."
+        },
+        "sequence": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "1-based order of the turnpoint in the task definition."
+        },
+        "latitude": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90,
+          "description": "Latitude of the turnpoint in decimal degrees."
+        },
+        "longitude": {
+          "type": "number",
+          "minimum": -180,
+          "maximum": 180,
+          "description": "Longitude of the turnpoint in decimal degrees."
+        },
+        "elevation_m": {
+          "type": "number",
+          "description": "Turnpoint elevation in meters."
+        },
+        "description": {
+          "type": "string",
+          "description": "Free-text description of the turnpoint."
+        }
+      },
+      "required": [
+        "name",
+        "sequence",
+        "latitude",
+        "longitude"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "stac_version": "1.0.0",
+  "stac_extensions": [
+    "https://stac-extensions.github.io/igc/v1.0.0/schema.json"
+  ],
+  "type": "Feature",
+  "id": "igc-2024-03-02-training",
+  "geometry": {
+    "type": "LineString",
+    "coordinates": [
+      [151.1770, -33.9150],
+      [151.2083, -33.8412],
+      [151.2477, -33.7801]
+    ]
+  },
+  "bbox": [
+    151.1770,
+    -33.9150,
+    151.2477,
+    -33.7801
+  ],
+  "properties": {
+    "datetime": "2024-03-02T02:40:00Z",
+    "start_datetime": "2024-03-02T02:40:00Z",
+    "end_datetime": "2024-03-02T04:05:00Z",
+    "igc:pilot": "Jordan Lee",
+    "igc:co_pilot": "Taylor Singh",
+    "igc:glider": "Duo Discus XLT (VH-ABC)",
+    "igc:takeoff_time": "2024-03-02T02:40:00Z",
+    "igc:landing_time": "2024-03-02T04:05:00Z",
+    "igc:altitude_min_m": 400.0,
+    "igc:altitude_max_m": 1850.0,
+    "igc:altitude_reference": "gps"
+  },
+  "assets": {
+    "igc-log": {
+      "href": "https://example.org/flights/igc/2024-03-02-training.igc",
+      "type": "text/plain",
+      "roles": [
+        "metadata",
+        "data"
+      ],
+      "title": "Original IGC flight log"
+    },
+    "flight-track": {
+      "href": "https://example.org/flights/derived/2024-03-02-training-track.parquet",
+      "type": "application/vnd.apache.parquet",
+      "roles": [
+        "data",
+        "derived"
+      ],
+      "title": "GeoParquet LineString track",
+      "description": "Track converted to a GeoParquet table with WGS84 coordinates."
+    }
+  },
+  "links": [
+    {
+      "rel": "self",
+      "href": "https://example.org/stac/catalog/items/igc-2024-03-02-training.json"
+    }
+  ]
+}
