@@ -1,12 +1,12 @@
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "https://stac-extensions.github.io/igc/v1.0.0/schema.json",
   "title": "STAC IGC Item Extension",
   "description": "Defines additional Item properties that describe International Gliding Commission (IGC) flight metadata.",
   "type": "object",
   "allOf": [
     {
-      "$ref": "https://schemas.stacspec.org/v1.0.0/item-spec/json-schema/item.json"
+      "$ref": "https://schemas.stacspec.org/v1.1.0/item-spec/json-schema/item.json"
     },
     {
       "type": "object",
@@ -67,7 +67,7 @@
               "type": "array",
               "description": "Ordered list of declared task turnpoints.",
               "items": {
-                "$ref": "#/$defs/turnpoint"
+                "$ref": "#/definitions/turnpoint"
               },
               "minItems": 1
             }
@@ -78,29 +78,19 @@
             "igc:takeoff_time",
             "igc:landing_time"
           ],
-          "dependentSchemas": {
-            "igc:altitude_min_m": {
-              "properties": {
-                "igc:altitude_max_m": true
-              },
-              "required": [
-                "igc:altitude_max_m"
-              ]
-            },
-            "igc:altitude_max_m": {
-              "properties": {
-                "igc:altitude_min_m": true
-              },
-              "required": [
-                "igc:altitude_min_m"
-              ]
-            }
+          "dependencies": {
+            "igc:altitude_min_m": [
+              "igc:altitude_max_m"
+            ],
+            "igc:altitude_max_m": [
+              "igc:altitude_min_m"
+            ]
           }
         }
       }
     }
   ],
-  "$defs": {
+  "definitions": {
     "turnpoint": {
       "type": "object",
       "properties": {
